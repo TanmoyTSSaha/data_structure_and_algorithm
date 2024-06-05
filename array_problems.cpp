@@ -516,7 +516,124 @@ void sortArrayBetter(vector<int>& arr, int n)
     }
 }
 
+void sortArrayOptimal(vector<int> &arr, int n) {
+  int low = 0, mid = 0, high = n - 1;
 
+  while (mid <= high) {
+    if (arr[mid] == 0) {
+      swap(arr[low], arr[mid]);
+      low++;
+      mid++;
+    } else if (arr[mid] == 1) {
+      mid++;
+    } else {
+      swap(arr[high], arr[mid]);
+      high--;
+    }
+  }
+}
+
+int majorityElementBruteforce(vector<int> v) {
+	int n = v.size();
+	for(int i = 0; i < n; i++) {
+		int count = 0;
+		for(int j = 0; j < n; j++) {
+			if(v[j] == v[i]) {
+				count++;
+			}
+
+			if(count > n/2) return v[i];
+		}
+	}
+
+	return -1;
+}
+
+int majorityElementBetter(vector<int> v) {
+	map<int,int> mpp;
+	for(int i = 0; i < v.size(); i++) {
+		mpp[v[i]]++;
+	}
+
+	for(auto it: mpp) {
+		if(it.second > v.size()/2) {
+			return it.first;
+		}
+	}
+
+	return -1;
+}
+
+int majorityElementOptimised(vector<int> v) {
+  int cnt = 0;
+  int el;
+  for (int i = 0; i < v.size(); i++) {
+    if (cnt == 0) {
+      cnt = 1;
+      el = v[i];
+    } else if (v[i] == el) {
+      cnt++;
+    } else {
+      cnt--;
+    }
+  }
+  int cnt1 = 0;
+  for (int i = 0; i < v.size(); i++) {
+    if (v[i] == el)
+      cnt1++;
+  }
+
+  if (cnt1 > (v.size() / 2))
+    return el;
+
+  return -1;
+}
+
+long long maxSubarraySumBruteforce(vector<int> arr, int n)
+{
+    int maxNo = INT_MIN;
+    for(int i = 0; i < n; i++) {
+        for(int j = i; j < n; j++) {
+            int sum = 0;
+            for(int k = i; k <= j; k++) {
+                sum+= arr[k];
+                maxNo = max(sum, maxNo);
+            }
+        }
+    }
+    return maxNo < 0 ? 0 : maxNo;
+}
+
+long long maxSubarraySumOptimized(vector<int> arr, int n)
+{
+    long long sum = 0, maxNo = LONG_MIN;
+    for(int i = 0; i < n; i++) {
+        sum += arr[i];
+
+        if (sum > maxNo) {
+            maxNo = sum;
+        }
+
+        if (sum < 0) {
+            sum = 0;
+        }
+    }
+    return maxNo < 0 ? 0 : maxNo;
+}
+
+int maximumProfit(vector<int> &prices){
+    int mini = prices[0];
+    int maxProfit = 0;
+    int n = prices.size();
+    
+    for(int i = 1; i<n; i++) {
+        int cost = prices[i] - mini;
+        maxProfit = max(maxProfit, cost);
+        mini = min(mini, prices[i]);
+    }
+
+    return maxProfit;
+}
 
 int main()
 {
