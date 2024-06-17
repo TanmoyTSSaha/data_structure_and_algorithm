@@ -197,8 +197,6 @@ int longestSuccessiveElementsOptimal(vector<int> &a) {
   return longestConsecutiveArr;
 }
 
-#include <bits/stdc++.h> 
-
 void markRow(vector<vector<int>> &matrix, int m, int i) {
 	for(int j=0; j<m; j++) {
 		if(matrix[i][j] != 0) {
