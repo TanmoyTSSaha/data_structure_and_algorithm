@@ -113,9 +113,128 @@ void quickSorting(vector<int> &arr, int low, int high)
     }
 }
 
+vector<int> superiorElementsOptimal(vector<int>&a) {
+    int n = a.size();
+    vector<int> ldr;
+    int maxNo = INT_MIN;
+    for (int i = n-1; i >= 0; i--) {
+        if(a[i] > maxNo) {
+            ldr.push_back(a[i]);
+            maxNo=a[i];
+        }
+    }
+    sort(ldr.begin(), ldr.end());
+    return ldr;
+}
 
+int longestSuccessiveElementsBruteforce(vector<int> &a) {
+  // O(n^3)
+  int longestConsecutiveArr = 1;
+  int n = a.size();
+  sort(a.begin(), a.end());
 
+  for (int i = 0; i < n; i++) {
+    int consecutiveArrCount = 1;
+    int consecutiveNumber = a[i];
+    for (int j = 0; j < n; j++) {
+      if (a[j] == consecutiveNumber + 1) {
+        consecutiveNumber++;
+        consecutiveArrCount++;
+      }
+    }
+    if (longestConsecutiveArr < consecutiveArrCount) {
+      longestConsecutiveArr = consecutiveArrCount;
+    }
+  }
 
+  return longestConsecutiveArr;
+}
+
+int longestSuccessiveElementsBetter(vector<int> &a) {
+  int longestConsecutiveArr = 1;
+  int last_smaller = INT_MIN;
+  int n = a.size();
+  sort(a.begin(), a.end());
+
+  int consecutiveCount = 1;
+  for (int i = 0; i < n; i++) {
+    if(a[i]-1 == last_smaller) {
+      consecutiveCount++;
+      last_smaller=a[i];
+    } else if(a[i] != last_smaller) {
+        consecutiveCount=1;
+        last_smaller=a[i];
+    }
+    longestConsecutiveArr=max(longestConsecutiveArr,consecutiveCount);
+  }
+
+  return longestConsecutiveArr;
+}
+
+int longestSuccessiveElementsOptimal(vector<int> &a) {
+  int longestConsecutiveArr = 1;
+  int n = a.size();
+  if (n == 0) return 0;
+  int last_smaller = INT_MIN;
+  unordered_set<int> st;
+
+  for(int i=0; i<n; i++) {
+    st.insert(a[i]);
+  }
+
+  for (auto it : st) {
+    if(st.find(it-1) == st.end()) {
+      int cnt = 1;
+      int x = it;
+      while(st.find(x+1) != st.end()) {
+        x = x+1;
+        cnt = cnt+1;
+      }
+      longestConsecutiveArr = max(longestConsecutiveArr, cnt);
+    }
+  }
+
+  return longestConsecutiveArr;
+}
+
+#include <bits/stdc++.h> 
+
+void markRow(vector<vector<int>> &matrix, int m, int i) {
+	for(int j=0; j<m; j++) {
+		if(matrix[i][j] != 0) {
+			matrix[i][j] = -1;
+		}
+	}
+}
+
+void markCol(vector<vector<int>> &matrix, int n, int j) {
+	for(int i=0; i<n; i++) {
+		if(matrix[i][j] != 0) {
+			matrix[i][j] = -1;
+		}
+	}
+}
+
+vector<vector<int>> zeroMatrixBruteforce(vector<vector<int>> &matrix, int n, int m) {
+	for(int i=0; i<n; i++) {
+		for(int j=0; j<m; j++) {
+			if(matrix[i][j] == 0) {
+				markRow(matrix, m, i);
+				markCol(matrix, n, j);
+			}
+		}
+	}
+
+	for(int i=0; i<n; i++) {
+		for(int j=0; j<m; j++) {
+			if(matrix[i][j]==-1) {
+				matrix[i][j] = 0;
+			}
+		}
+	}
+
+	return matrix;
+}
 
 int main()
 {

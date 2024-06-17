@@ -635,6 +635,85 @@ int maximumProfit(vector<int> &prices){
     return maxProfit;
 }
 
+vector<int> alternateNumbersOptimalWithBetterTimeComplexity(vector<int>&a) {
+    int n = a.size();
+    vector<int> ans(n,0);
+    int posIndex = 0, negIndex = 1;
+
+    for(int i=0; i<n; i++) {
+        if(a[i] < 0) {
+            ans[negIndex] = a[i];
+            negIndex+=2;
+        } else {
+            ans[posIndex] = a[i];
+            posIndex+=2;
+        }
+    }
+
+    return ans;
+}
+
+vector<int> alternateNumbersBruteforce(vector<int>&a) {
+    vector<int> pos;
+    vector<int> neg;
+
+    for(int i=0; i<a.size(); i++) {
+        if(a[i]>0) {
+            pos.push_back(a[i]);
+        } 
+        else if (a[i] < 0) {
+            neg.push_back(a[i]);
+        }
+    }
+
+    int finalNum[a.size()];
+
+    for(int i=0; i<a.size()/2; i++) {
+        finalNum[2*i]=pos[i];
+        finalNum[2*i+1]=neg[i];
+    }
+
+    vector<int> vectArr;
+
+    for(int i=0; i<a.size(); i++) {
+        vectArr.push_back(finalNum[i]);
+    }
+
+    return vectArr;
+}
+
+vector<int> nextGreaterPermutationUsingSTLBetterSol(vector<int> &A) {
+    next_permutation(A.begin(), A.end());
+    return A;
+}
+
+vector<int> nextGreaterPermutation(vector<int> &A) {
+    int ind = -1;
+    int n = A.size();
+    
+    for(int i=n-2; i>=0; i--) {
+        if(A[i] <= A[i+1]) {
+            ind = i;
+            break;
+        }
+    }
+    if(ind == -1) {
+        reverse(A.begin(), A.end());
+        return A;
+    }
+
+    for(int i=n-1; i>ind; i--) {
+        if(A[i]>A[ind]) {
+            swap(A[i], A[ind]);
+            break;
+        }
+    }
+
+    reverse(A.begin() + ind + 1, A.end());
+    
+    return A;
+}
+
 int main()
 {
     vector<int> arr1;
