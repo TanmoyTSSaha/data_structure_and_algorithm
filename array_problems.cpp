@@ -478,7 +478,6 @@ string twoSumBetter(int n, vector<int> book, int target)
     return "NO";
 }
 
-
 string twoSumOptimal(int n, vector<int> book, int target)
 {
     int left = 0, right = n-1;
@@ -712,6 +711,227 @@ vector<int> nextGreaterPermutation(vector<int> &A) {
     reverse(A.begin() + ind + 1, A.end());
     
     return A;
+}
+
+vector<int> superiorElementsOptimal(vector<int>&a) {
+    int n = a.size();
+    vector<int> ldr;
+    int maxNo = INT_MIN;
+    for (int i = n-1; i >= 0; i--) {
+        if(a[i] > maxNo) {
+            ldr.push_back(a[i]);
+            maxNo=a[i];
+        }
+    }
+    sort(ldr.begin(), ldr.end());
+    return ldr;
+}
+
+int longestSuccessiveElementsBruteforce(vector<int> &a) {
+  // O(n^3)
+  int longestConsecutiveArr = 1;
+  int n = a.size();
+  sort(a.begin(), a.end());
+
+  for (int i = 0; i < n; i++) {
+    int consecutiveArrCount = 1;
+    int consecutiveNumber = a[i];
+    for (int j = 0; j < n; j++) {
+      if (a[j] == consecutiveNumber + 1) {
+        consecutiveNumber++;
+        consecutiveArrCount++;
+      }
+    }
+    if (longestConsecutiveArr < consecutiveArrCount) {
+      longestConsecutiveArr = consecutiveArrCount;
+    }
+  }
+
+  return longestConsecutiveArr;
+}
+
+int longestSuccessiveElementsBetter(vector<int> &a) {
+  int longestConsecutiveArr = 1;
+  int last_smaller = INT_MIN;
+  int n = a.size();
+  sort(a.begin(), a.end());
+
+  int consecutiveCount = 1;
+  for (int i = 0; i < n; i++) {
+    if(a[i]-1 == last_smaller) {
+      consecutiveCount++;
+      last_smaller=a[i];
+    } else if(a[i] != last_smaller) {
+        consecutiveCount=1;
+        last_smaller=a[i];
+    }
+    longestConsecutiveArr=max(longestConsecutiveArr,consecutiveCount);
+  }
+
+  return longestConsecutiveArr;
+}
+
+int longestSuccessiveElementsOptimal(vector<int> &a) {
+  int longestConsecutiveArr = 1;
+  int n = a.size();
+  if (n == 0) return 0;
+  int last_smaller = INT_MIN;
+  unordered_set<int> st;
+
+  for(int i=0; i<n; i++) {
+    st.insert(a[i]);
+  }
+
+  for (auto it : st) {
+    if(st.find(it-1) == st.end()) {
+      int cnt = 1;
+      int x = it;
+      while(st.find(x+1) != st.end()) {
+        x = x+1;
+        cnt = cnt+1;
+      }
+      longestConsecutiveArr = max(longestConsecutiveArr, cnt);
+    }
+  }
+
+  return longestConsecutiveArr;
+}
+
+void markRow(vector<vector<int>> &matrix, int m, int i) {
+	for(int j=0; j<m; j++) {
+		if(matrix[i][j] != 0) {
+			matrix[i][j] = -1;
+		}
+	}
+}
+
+void markCol(vector<vector<int>> &matrix, int n, int j) {
+	for(int i=0; i<n; i++) {
+		if(matrix[i][j] != 0) {
+			matrix[i][j] = -1;
+		}
+	}
+}
+
+vector<vector<int>> zeroMatrixBruteforce(vector<vector<int>> &matrix, int n, int m) {
+	for(int i=0; i<n; i++) {
+		for(int j=0; j<m; j++) {
+			if(matrix[i][j] == 0) {
+				markRow(matrix, m, i);
+				markCol(matrix, n, j);
+			}
+		}
+	}
+
+	for(int i=0; i<n; i++) {
+		for(int j=0; j<m; j++) {
+			if(matrix[i][j]==-1) {
+				matrix[i][j] = 0;
+			}
+		}
+	}
+
+	return matrix;
+}
+
+vector<vector<int>> zeroMatrixOptimal(vector<vector<int>> &matrix, int n, int m) {
+  // int col[m] = {0}; -> matrix[0][..]
+  // int row[n] = {0}; -> matrix[..][0]
+  int col0=1;
+  for(int i=0; i<n; i++) {
+	  for(int j=0; j<m; j++) {
+		  if(matrix[i][j] == 0) {
+			  // mark the i-th row
+			  matrix[i][0] = 0;
+			  if(j != 0)
+			  	matrix[0][j] = 0;
+			  else
+			    col0=0;
+		  }
+	  }
+  }
+
+  for(int i=0; i<n; i++) {
+	  for(int j=0; j<m; j++) {
+		  if(matrix[i][j] != 0) {
+			  if(matrix[0][j] == 0 || matrix[i][0] == 0) {
+				  matrix[i][j] = 0;
+			  }
+		  }
+	  }
+  }
+
+  if(matrix[0][0] == 0) {
+	  for(int j=0; j<m; j++) matrix[0][j] = 0;
+  }
+
+  if(col0 == 0) {
+	  for(int i=0; i<n; i++) matrix[i][0] = 0;
+  }
+
+  return matrix;
+}
+
+void rotateMatrixBruteforce(vector<vector<int>> &mat){
+	vector<vector<int>> ansMat;
+	int n = mat.size();
+
+	for(int i=0; i<n; i++) {
+		for(int j=0; j<n; j++) {
+			ansMat[i][n-1-i] = mat[i][j];
+		}
+	}
+
+	mat = ansMat;
+}
+
+void rotateMatrixOptimal(vector<vector<int>> &mat){
+	int n = mat.size();
+	for(int i=0; i<n-1; i++) {
+		for(int j=i+1; j<n; j++) {
+			swap(mat[i][j], mat[j][i]);
+		}
+	}
+
+	for(int i=0; i<n; i++) {
+		reverse(mat[i].begin(), mat[i].end());
+	}
+}
+
+vector<int> spiralMatrix(vector<vector<int>> &mat) {
+  int n = mat.size();
+  int m = mat[0].size();
+  int left = 0, right = m - 1;
+  int top = 0, bottom = n - 1;
+  vector<int> ans;
+
+  while (top <= bottom && left <= right) {
+    for (int i = left; i <= right; i++) {
+      ans.push_back(mat[top][i]);
+    }
+    top++;
+
+    for (int i = top; i <= bottom; i++) {
+      ans.push_back(mat[i][right]);
+    }
+    right--;
+
+    if (top <= bottom) {
+      for (int i = right; i >= left; i--) {
+        ans.push_back(mat[bottom][i]);
+      }
+      bottom--;
+    }
+
+    if (left <= right) {
+      for (int i = bottom; i >= top; i--) {
+        ans.push_back(mat[i][left]);
+      }
+      left++;
+    }
+  }
+
+  return ans;
 }
 
 int main()
