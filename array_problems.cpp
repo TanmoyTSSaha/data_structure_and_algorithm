@@ -146,28 +146,6 @@ int linearSearch(int n, int num, vector<int> &arr)
     return idx;
 }
 
-// vector<int> unionArrayBruteforce(vector<int> arr1, vector<int> arr2)
-// {
-//     set<int> unionedSet;
-//     for (int i = 0; i < arr1.size(); i++)
-//     {
-//         unionedSet.insert(arr1[i]);
-//     }
-
-//     for (int i = 0; i < arr2.size(); i++)
-//     {
-//         unionedSet.insert(arr2[i]);
-//     }
-
-//     vector<int> unionedArr;
-//     for (auto it : unionedSet)
-//     {
-//         unionedArr.push_back(it);
-//     }
-
-//     return unionedArr;
-// }
-
 vector<int> unionArrayOptimized2Pointer(vector<int> arr1, vector<int> arr2)
 {
     int n1 = arr1.size();
