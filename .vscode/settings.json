@@ -5,7 +5,13 @@
         "vector": "cpp",
         "set": "cpp",
         "ratio": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "__split_buffer": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "queue": "cpp",
+        "string": "cpp",
+        "string_view": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
