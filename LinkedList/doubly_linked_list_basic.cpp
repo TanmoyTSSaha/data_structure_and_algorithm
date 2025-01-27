@@ -57,7 +57,7 @@ Node* deleteHead(Node* head)
         if (head->next == NULL)
             delete head;
 
-        return NULL
+        return NULL;
     }
 
     Node* prev = head;
@@ -121,7 +121,7 @@ Node* removeKthNode(Node* head, int k)
     else if (prev == NULL)
         return deleteHead(head);
     else if (front == NULL)
-        return deleteTail(head)
+        return deleteTail(head);
 
     prev->next = front;
     front->back = prev;
@@ -155,7 +155,12 @@ void deleteNode(Node* temp) {
 }
 
 Node* insertBeforeHead(Node* head, int val) {
-    Node* newHhead = new Node(val, head, nullptr);
+    if (head == NULL)
+    {
+        Node* newHead = new Node(k, nullptr, nullptr);
+        return newHead;
+    }
+    Node* newHead = new Node(val, head, nullptr);
     head->back = newHead;
 
     return newHead;
@@ -216,6 +221,38 @@ void insertBeforeNode(Node* node, int val) {
 
     prevNode->next = newNode;
     node->back = newNode;
+}
+
+void insertBeforeNode(Node* node, int val) {
+    Node* prevNode = node->back;
+    Node* newNode = new Node(val, node, prevNode);
+
+    prevNode->next = newNode;
+    node->back = newNode;
+}
+
+Node* reverseDLL(Node* head)
+{   
+    if (head == NULL || head->next == NULL) {
+        return head;
+    }
+
+    Node* prev = NULL;
+    Node* current = head;
+
+    while(current != NULL) {
+        prev = current->back;
+
+        current->back = current->next;
+
+        current->next = prev;
+
+        current = current->back;
+    }
+
+    return prev->back;
+
+
 }
 
 int main()

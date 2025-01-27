@@ -2,35 +2,31 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Node {
-    public:
+class Node{
+    Public:
     int data;
     Node* next;
-    Node* back;
-    
-    public:
-    Node(int data1, Node* next1, Node* back1) {
-        data=data1;
-        next=next1;
-        back=back1;
+    Public:
+
+    Node (int data1, Node* next1){
+        data=data1; 
+        next=next1; 
     }
-    
-    public:
-    Node(int data1) {
-        data=data1;
-        next=nullptr;
-        back=nullptr;
+    Node (int data1){
+        data=data1; 
+        next=nullptr; 
+
     }
 };
 
-Node* convertAllToDoublyLinkedList(vector<int> &arr) {
+Node* constructLL(vector<int>& arr) {
     Node* head = new Node(arr[0]);
-    Node* prev = head;
+    Node* mover = head;
     
     for(int i=1; i<arr.size(); i++) {
-        Node* temp = new Node(arr[i], nullptr, prev);
-        prev->next = temp;
-        prev = temp;
+        Node* temp = new Node(arr[i]);
+        mover->next = temp;
+        mover = temp;
     }
     
     return head;
@@ -43,57 +39,29 @@ void print(Node* head) {
     }
 }
 
-Node* removeHead(Node* head) {
-    if (head == NULL || head->next == NULL) {
-        if(head->next == NULL) delete head;
-        
-        return NULL;
-    }
-    
-    Node* prev = head;
-    
-    head = head->next;
-    head->back = nullptr;
-    prev->next = nullptr;
-    
-    delete prev;
-    
-    return head;
-}
-
-Node* removeTail(Node* head) {
-    if (head == NULL || head->next == NULL) {
-        if(head->next == NULL) delete head;
-        
-        return NULL;
-    }
-    
+int lengthOfLinkedList(Node *head)
+{
+	int cnt=0;
     Node* temp = head;
     
-    while(temp->next->next != NULL) {
+    while(temp) {
+        temp = temp->next;
+        cnt++;
+    }
+    
+    return cnt;
+}
+
+int searchInLinkedList(Node<int> *head, int k) {
+    Node<int>* temp = head;
+    
+    while(temp) {
+        if(k == temp->data) return 1;
+        
         temp = temp->next;
     }
     
-    Node* next = temp->next;
-    
-    next->back = nullptr;
-    temp->next = nullptr;
-    
-    delete next;
-    
-    
-    return head;
-}
-
-Node* removeElementsFromLinkedListByPosition(Node* head, int k) {
-    if (head == NULL) return NULL;
-    
-    int cntr = 0;
-    Node* KNode = head;
-    
-    while()
-    
-    return head;
+    return 0;
 }
 
 int main() {
